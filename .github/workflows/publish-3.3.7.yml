@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Download verified installer
         run: |
-          curl -fL --retry 5 --retry-delay 3 -o IBBI_Marketplace_Tool_Setup_3.3.7.exe "https://tmpfiles.org/dl/wGwU46LtMWi1/ibbi_marketplace_tool_setup_3.3.7.exe"
+          curl -fL --retry 5 --retry-delay 3 -o IBBI_Marketplace_Tool_Setup_3.3.7.exe "https://tmpfiles.org/dl/1788805678.8b91b902200e5460/wGwU46LtMWi1/ibbi_marketplace_tool_setup_3.3.7.exe"
           echo "e67d65911b60bb31df56e1cc84193c4cadad69236f211541945ac008ab1d4840  IBBI_Marketplace_Tool_Setup_3.3.7.exe" | sha256sum -c -
       - name: Publish GitHub Release
         env:
