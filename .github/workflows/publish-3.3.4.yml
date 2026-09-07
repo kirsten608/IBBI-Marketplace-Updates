@@ -20,5 +20,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release view v3.3.4 >/dev/null 2>&1 || gh release create v3.3.4 --title "IBBI Marketplace Tool 3.3.4" --notes "Final approved client update: latest Open All Profiles, profile selection stability, delete saved drafts recovery, and background Publish Listing fixes."
-          gh release upload v3.3.4 IBBI_Marketplace_Tool_Setup_3.3.4.exe --clobber
+          gh release view v3.3.4 --repo kirsten608/IBBI-Marketplace-Updates >/dev/null 2>&1 || gh release create v3.3.4 --repo kirsten608/IBBI-Marketplace-Updates --title "IBBI Marketplace Tool 3.3.4" --notes "Final approved client update: latest Open All Profiles, profile selection stability, delete saved drafts recovery, and background Publish Listing fixes."
+          gh release upload v3.3.4 IBBI_Marketplace_Tool_Setup_3.3.4.exe --repo kirsten608/IBBI-Marketplace-Updates --clobber
