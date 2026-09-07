@@ -1,0 +1,24 @@
+name: Publish 3.3.6
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download verified installer
+        run: |
+          curl -fL --retry 5 --retry-delay 3 -o IBBI_Marketplace_Tool_Setup_3.3.6.exe "https://tmpfiles.org/dl/1788798274.0d69f913e806bbdd/wowl4gMgGFJq/ibbi_marketplace_tool_setup_3.3.6.exe"
+          echo "2a07bcfec318fcc828285097afeb4a84aa3342e06bbfb02df9cdd187fd9f543e  IBBI_Marketplace_Tool_Setup_3.3.6.exe" | sha256sum -c -
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view v3.3.6 >/dev/null 2>&1 || gh release create v3.3.6 --title "IBBI Marketplace Tool 3.3.6" --notes "Final stability release: Auto Pilot Save Draft profile selection, Open All Profiles cold-start cleanup and duplicate handling, background Publish Listing reliability, Delete Saved Drafts error recovery, and automatic extension sync/reload after updates."
+          gh release upload v3.3.6 IBBI_Marketplace_Tool_Setup_3.3.6.exe --clobber
