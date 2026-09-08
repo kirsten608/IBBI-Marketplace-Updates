@@ -1,0 +1,24 @@
+name: Publish 3.3.8
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download verified installer
+        run: |
+          curl -fL --retry 5 --retry-delay 3 -o IBBI_Marketplace_Tool_Setup_3.3.8.exe "https://tmpfiles.org/dl/wMwR4gi2vtcS/ibbi_marketplace_tool_setup_3.3.8.exe"
+          echo "849b31323358634847193d4c04220f2ea820bb9f083a1d8bb2f6f86b8bcdfc30  IBBI_Marketplace_Tool_Setup_3.3.8.exe" | sha256sum -c -
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view v3.3.8 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || gh release create v3.3.8 --repo "$GITHUB_REPOSITORY" --title "IBBI Marketplace Tool 3.3.8" --notes "Final audited stability release. Background Publish Listing was live-tested successfully across A22, A25, A26 and A27 (4/4). Includes extension 7.2.7.17 and the finalized Auto Pilot / publish reliability fixes."
+          gh release upload v3.3.8 IBBI_Marketplace_Tool_Setup_3.3.8.exe --repo "$GITHUB_REPOSITORY" --clobber
